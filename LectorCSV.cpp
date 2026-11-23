@@ -183,6 +183,74 @@ void LectorCSV::eliminarBOM(std::string& linea) {
  */
 void LectorCSV::mostrarEspecie(const Especie& especie) {
     std::cout << " - [" << especie.getcodigo_especie() << "] " << especie.getnombre_comun()
-              << " (" << especie.getnombre_cientifico() << ") - "
-              << especie.gettipo_planta() << "\n";
+            << " (" << especie.getnombre_cientifico() << ") - "
+            << especie.gettipo_planta() << "\n";
+}
+#include <algorithm> // Para std::replace
+
+
+
+bool LectorCSV::cargarArboles(std::vector<Arbol>& arboles, const std::string& rutaFichero) {
+    std::ifstream fichero(rutaFichero);
+    if (!fichero.is_open()) {
+        return false;
+    }
+
+    std::string linea;
+    if (std::getline(fichero, linea)) {
+        eliminarBOM(linea); // Limpiamos el BOM si existe en la cabecera
+    }
+
+    while (std::getline(fichero, linea)) {
+        if (!linea.empty() && linea.back() == '\r') {
+            linea.pop_back();
+        }
+        if (linea.empty()) continue;
+
+        std::string campos[12];
+        std::size_t posicion = 0;
+        
+        // Extraemos los 12 campos separados por ';'
+        for (int i = 0; i < 12; ++i) {
+            std::size_t found = linea.find(';', posicion);
+            if (found != std::string::npos) {
+                campos[i] = linea.substr(posicion, found - posicion);
+                posicion = found + 1;
+            } else {
+                campos[i] = linea.substr(posicion);
+                break;
+            }
+        }
+
+        if (campos[0].empty()) continue;
+
+        try {
+            // Normalizamos las comas decimales a puntos
+            std::string x_str = campos[6];
+            std::string y_str = campos[7];
+            std::replace(x_str.begin(), x_str.end(), ',', '.');
+            std::replace(y_str.begin(), y_str.end(), ',', '.');
+            
+            std::string alt_str = campos[10];
+            std::replace(alt_str.begin(), alt_str.end(), ',', '.');
+            
+            std::string diam_str = campos[11];
+            std::replace(diam_str.begin(), diam_str.end(), ',', '.');
+
+            // Creamos el objeto UTM con las coordenadas
+            UTM coord(std::stod(x_str), std::stod(y_str));
+            
+            float perimetro = diam_str.empty() ? 0.0f : std::stof(diam_str);
+            float altura = alt_str.empty() ? 0.0f : std::stof(alt_str);
+
+            // Llamada exacta al constructor de 9 parámetros de tu Arbol
+            Arbol arbol(campos[0], std::stoi(campos[1]), std::stoi(campos[2]), campos[3],
+                        std::stoi(campos[4]), campos[5], coord, perimetro, altura);
+                        
+            arboles.push_back(arbol);
+        } catch (const std::exception&) {
+            continue; 
+        }
+    }
+    return true;
 }

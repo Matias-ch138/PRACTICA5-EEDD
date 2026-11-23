@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "ControlParques.h"
 #include "LectorCSV.h"
+
 using namespace std;
 static bool leerCampoCSV(const string& linea, size_t& posicion, string& campo, char separador = ',') {
     campo.clear();
@@ -37,17 +38,17 @@ static bool leerCampoCSV(const string& linea, size_t& posicion, string& campo, c
     return !entreComillas;
 }
 
-static bool leerRegistroArbol(const string& linea, string campos[], size_t numeroCampos) {
+static bool leerRegistroCSV(const string& linea, string campos[], size_t numeroCampos, char separador = ';') {
     size_t posicion = 0;
     for (size_t i = 0; i < numeroCampos; ++i) {
-        if (!leerCampoCSV(linea, posicion, campos[i], ';')) {
+        if (!leerCampoCSV(linea, posicion, campos[i], separador)) {
             return false;
         }
-        if (i + 2 < numeroCampos && posicion == linea.size()) {
+        if (i + 1 < numeroCampos && posicion == linea.size() && linea.back() != separador) {
             return false;
         }
     }
-    return posicion == linea.size();
+    return true;
 }
 
 static float leerMedidaCSV(const string& campo) {
@@ -59,6 +60,26 @@ static float leerMedidaCSV(const string& campo) {
     return stof(normalizado);
 }
 
+static void limpiarLinea(string& linea) {
+    if (!linea.empty() && linea.back() == '\r') {
+        linea.pop_back();
+    }
+    // Eliminar BOM UTF-8 si existe
+    if (linea.size() >= 3 &&
+        static_cast<unsigned char>(linea[0]) == 0xEF &&
+        static_cast<unsigned char>(linea[1]) == 0xBB &&
+        static_cast<unsigned char>(linea[2]) == 0xBF) {
+        linea.erase(0, 3);
+    }
+}
+unsigned long ControlParques::djb2(const char* str) {
+    unsigned long hash = 5381;
+    int c;
+    while ((c = static_cast<unsigned char>(*str++))) {
+        hash = ((hash << 5) + hash) + c; // hash * 33 + c
+    }
+    return hash;
+}
 static Especie* buscarEspecie(vector<Especie>& especies, const string& codigo) {
     int inicio = 0;
     int fin = static_cast<int>(especies.size()) - 1;
@@ -85,41 +106,50 @@ static Parque* buscarParquePorCodigo(list<Parque>& parques, int codigo) {
     }
     return nullptr;
 }
-ControlParques::ControlParques(){
-    
+ControlParques::ControlParques() : trees(135000, 0.65f, 3) {
 }
-ControlParques::ControlParques(const string& rutaEspecies, const string& rutaParques, const string& rutaArboles){
-    LectorCSV lector;
-    lector.cargar(varieties, rutaEspecies);
-    sort(varieties.begin(), varieties.end()); 
+ControlParques::ControlParques(const string& rutaEspecies, const string& rutaParques,const string& rutaArboles, const string& rutaCajasNido)
+    : trees(135000, 0.65f, 3) {
 
-    // 1. Cargar Parques
-    ifstream fichero(rutaParques);
-    if (fichero.is_open()) {
+    // 1. Cargar Especies directamente en map<string, Especie>
+    vector<Especie> vecEspeciesAux;
+    LectorCSV lector;
+    if (lector.cargar(vecEspeciesAux, rutaEspecies)) {
+        for (size_t i = 0; i < vecEspeciesAux.size(); ++i) {
+            varieties.insert({vecEspeciesAux[i].get_codigo_especie(), vecEspeciesAux[i]});
+        }
+    } else {
+        cerr << "Error: No se pudo abrir el archivo de especies: " << rutaEspecies << endl;
+    }
+
+    // 2. Cargar Parques directamente en map<int, Parque>
+    ifstream ficheroParques(rutaParques);
+    if (ficheroParques.is_open()) {
         string linea;
-        while (getline(fichero, linea)) {
+        while (getline(ficheroParques, linea)) {
+            limpiarLinea(linea);
             if (linea.empty()) continue;
-            
+
             string cod_str, nombre_parque;
             size_t posicion = 0;
-
-            if (leerCampoCSV(linea, posicion, cod_str) &&
-                leerCampoCSV(linea, posicion, nombre_parque)) {
+            if (leerCampoCSV(linea, posicion, cod_str) && leerCampoCSV(linea, posicion, nombre_parque)) {
                 try {
                     int cod = stoi(cod_str);
-                    Parque p(cod, nombre_parque);
-                    parks.push_back(p);
-                } catch (const invalid_argument& e) {
+                    parks.insert({cod, Parque(cod, nombre_parque)});
+                } catch (const exception&) {
                     continue;
                 }
             }
         }
-        fichero.close();
+        ficheroParques.close();
     } else {
         cerr << "Error: No se pudo abrir el archivo de parques: " << rutaParques << endl;
     }
 
-    // 2. Cargar Árboles
+    // 3. Cargar Árboles en ThashArbol y guardar assetnums en vector auxiliar
+    vector<string> assetnumsAux;
+    assetnumsAux.reserve(135000);
+
     ifstream ficheroArboles(rutaArboles);
     if (!ficheroArboles.is_open()) {
         cerr << "Error: No se pudo abrir el archivo de arboles: " << rutaArboles << endl;
@@ -127,15 +157,13 @@ ControlParques::ControlParques(const string& rutaEspecies, const string& rutaPar
     }
 
     string lineaArbol;
-    getline(ficheroArboles, lineaArbol);
+    getline(ficheroArboles, lineaArbol); // Saltar cabecera
     while (getline(ficheroArboles, lineaArbol)) {
-        if (!lineaArbol.empty() && lineaArbol.back() == '\r') {
-            lineaArbol.pop_back();
-        }
+        limpiarLinea(lineaArbol);
         if (lineaArbol.empty()) continue;
 
         string campos[12];
-        if (!leerRegistroArbol(lineaArbol, campos, 12) || campos[0].empty()) {
+        if (!leerRegistroCSV(lineaArbol, campos, 12, ';') || campos[0].empty()) {
             continue;
         }
 
@@ -144,47 +172,122 @@ ControlParques::ControlParques(const string& rutaEspecies, const string& rutaPar
             string y = campos[7];
             replace(x.begin(), x.end(), ',', '.');
             replace(y.begin(), y.end(), ',', '.');
-            
+            UTM coord(stod(x), stod(y));
+
             Arbol arbol(campos[0], stoi(campos[1]), stoi(campos[2]), campos[3],
-                        stoi(campos[4]), campos[5], stod(x), stod(y),
+                        stoi(campos[4]), campos[5], coord,
                         leerMedidaCSV(campos[10]), leerMedidaCSV(campos[11]));
-            
-            Especie* especieEncontrada = buscarEspecie(varieties, campos[8]);
+
+            // Buscar especie en map<string, Especie>
+            Especie* especieEncontrada = nullptr;
+            map<string, Especie>::iterator itEsp = varieties.find(campos[8]);
+            if (itEsp != varieties.end()) {
+                especieEncontrada = &(itEsp->second);
+            }
             arbol.setEspecie(especieEncontrada);
 
-            // Insertar en mapa principal de árboles (con tipo explicito std::pair)
-            pair<map<string, Arbol>::iterator, bool> resultado = trees.insert({arbol.get_assetnum(), arbol});
-            if (!resultado.second) {
-                continue; 
+            // Insertar en ThashArbol usando clave djb2
+            unsigned long claveHash = djb2(arbol.get_assetnum().c_str());
+            if (!trees.insertar(claveHash, arbol)) {
+                continue;
             }
 
-            // Obtener puntero al árbol insertado en el mapa
-            Arbol* arbolAlmacenado = &(resultado.first->second);
-            
-            // Relación con Parque (bidireccional)
-            Parque* parque = buscarParquePorCodigo(parks, arbolAlmacenado->get_num_parque());
-            if (parque != nullptr) {
-                parque->insertarArbol(arbolAlmacenado); 
-                arbolAlmacenado->setParque(parque);
+            assetnumsAux.push_back(arbol.get_assetnum());
+
+            // Recuperar puntero al árbol ya almacenado en la tabla hash
+            Arbol* arbolAlmacenado = trees.buscar(claveHash);
+            if (arbolAlmacenado != nullptr) {
+                // Enlazar con Parque en map<int, Parque>
+                map<int, Parque>::iterator itParque = parks.find(arbolAlmacenado->get_num_parque());
+                if (itParque != parks.end()) {
+                    itParque->second.insertarArbol(arbolAlmacenado);
+                    arbolAlmacenado->setParque(&(itParque->second));
+                }
+
+                // Insertar en multimap de nombres comunes
+                if (especieEncontrada != nullptr) {
+                    treeName.insert({especieEncontrada->get_nombre_comun(), arbolAlmacenado});
+                }
             }
-            
-            // Insertar en multimap de nombres comunes
-            if (especieEncontrada != nullptr) {
-                treeName.insert({especieEncontrada->get_nombre_comun(), arbolAlmacenado});
-            }
-            
         } catch (const exception&) {
             continue;
         }
     }
+    ficheroArboles.close();
+
+    // 4. Cargar Cajas Nido desde cajas-nido.csv
+    ifstream ficheroCajas(rutaCajasNido);
+    if (!ficheroCajas.is_open()) {
+        cerr << "Error: No se pudo abrir el archivo de cajas nido: " << rutaCajasNido << endl;
+        return;
+    }
+
+    string lineaCaja;
+    getline(ficheroCajas, lineaCaja); // Saltar cabecera
+    while (getline(ficheroCajas, lineaCaja)) {
+        limpiarLinea(lineaCaja);
+        if (lineaCaja.empty()) continue;
+
+        // Nota: Ajustar los índices de columna si tu CSV tiene otro orden
+        // Formato habitual: distrito;barrio;ubicacion;utm_x;utm_y
+        string camposCaja[5];
+        if (!leerRegistroCSV(lineaCaja, camposCaja, 5, ';')) {
+            continue;
+        }
+
+        try {
+            string xStr = camposCaja[3];
+            string yStr = camposCaja[4];
+            replace(xStr.begin(), xStr.end(), ',', '.');
+            replace(yStr.begin(), yStr.end(), ',', '.');
+            UTM coordCaja(stod(xStr), stod(yStr));
+
+            CajaNido caja(camposCaja[0], camposCaja[1], camposCaja[2], coordCaja);
+            nests.push_back(caja);
+        } catch (const exception&) {
+            continue;
+        }
+    }
+    ficheroCajas.close();
+
+    // 5. Asociar cada Caja Nido al árbol más cercano con distancia^2 < 100 (< 10m)
+    unsigned int cajasAsociadas = 0;
+    for (size_t i = 0; i < nests.size(); ++i) {
+        Arbol* arbolMasCercano = nullptr;
+        double minDist2 = 100.0; // Umbral estricto < 100
+
+        for (size_t j = 0; j < assetnumsAux.size(); ++j) {
+            Arbol* arbolActual = buscarArbol(assetnumsAux[j]);
+            if (arbolActual != nullptr) {
+                double d2 = nests[i].getCoord().distancia2(arbolActual->get_coord());
+                if (d2 < minDist2) {
+                    minDist2 = d2;
+                    arbolMasCercano = arbolActual;
+                }
+            }
+        }
+
+        nests[i].setArbol(arbolMasCercano);
+        if (arbolMasCercano != nullptr) {
+            cajasAsociadas++;
+        }
+    }
+
+    // 6. Mostrar resumen obligatorio de carga por pantalla
+    cout << "--- RESUMEN DE CARGA CONTROLPARQUES ---" << endl;
+    cout << "Total arboles cargados: " << trees.numElementos() << endl;
+    cout << "Total cajas nido procesadas: " << nests.size() << endl;
+    cout << "Cajas nido asociadas a un arbol: " << cajasAsociadas << endl;
+    cout << "Cajas nido sin asociar: " << (nests.size() - cajasAsociadas) << endl;
+    cout << "---------------------------------------" << endl;
 }
 
 
 int ControlParques::contarEspecieParque(string ncomun){
     int contador = 0;
-    list<Parque>::iterator it=parks.begin();
+    map<int,Parque>::iterator it=parks.begin();
     while(it!=parks.end()){
-        if(it->existeNbreCom(ncomun)){
+        if(it->second.existeNbreCom(ncomun)){
             contador++;
         }
         it++;
@@ -194,55 +297,73 @@ int ControlParques::contarEspecieParque(string ncomun){
 
 vector<Especie> ControlParques::listadoEspecieSubNbre(string cadena){
     vector<Especie> resultados;
-    for(int i=0; i<varieties.size(); i++){
-        if(varieties[i].getnombre_cientifico().find(cadena) != string::npos){
-            resultados.push_back(varieties[i]);
+    map<string,Especie>::iterator it=varieties.begin();
+    while(it!=varieties.end()){
+        if(it->second.getnombre_cientifico().find(cadena) != string::npos){
+            resultados.push_back(it->second);
         }
+        it++;
     }
     return resultados;
 }
 
 Parque* ControlParques::buscarParque(const string& nbre_parque){
-    list<Parque>::iterator it=parks.begin();
+    map<int,Parque>::iterator it=parks.begin();
     while(it!=parks.end()){
-        if(it->get_nbre_parque() == nbre_parque){
-            return &*it;
+        if(it->second.get_nbre_parque() == nbre_parque){
+            return &it->second;
         }
-      it++;  
+    it++;  
     }
     return nullptr;
 }
 
 
-vector<Especie>& ControlParques::get_varieties(){
+map<string,Especie>& ControlParques::get_varieties(){
     return varieties;
 }
 
-const vector<Especie>& ControlParques::get_varieties() const{
+const map<string,Especie>& ControlParques::get_varieties() const{
     return varieties;
 }
 
-list<Parque>& ControlParques::get_parks(){
+map<int,Parque>& ControlParques::get_parks(){
     return parks;
 }
 
-const list<Parque>& ControlParques::get_parks() const{
+const map<int,Parque>& ControlParques::get_parks() const{
     return parks;  
 }
 
-list<Parque>& ControlParques::get_nbre_parque(){
+vector<CajaNido>& ControlParques::get_nests() {
+    return nests;
+}
+
+const vector<CajaNido>& ControlParques::get_nests() const {
+    return nests;
+}
+
+map<int,Parque>& ControlParques::get_nbre_parque(){
     return parks;
 }
 
-const list<Parque>& ControlParques::get_nbre_parque() const{
+const map<int,Parque>& ControlParques::get_nbre_parque() const{
     return parks;
+}
+unsigned int ControlParques::tamTabla() const {
+    return trees.tamTabla();
+}
+
+void ControlParques::redispersar(unsigned int tam) {
+    trees.redispersar(tam);
+}
+
+void ControlParques::mostrarEstadoTabla() const {
+    trees.mostrarEstadoTabla();
 }
 
 Arbol* ControlParques::buscarArbol(string asNum){
-    if (trees.count(asNum) > 0) {    
-        return &trees.at(asNum);     
-    }
-    return nullptr;
+    return trees.buscar(djb2(asNum.c_str()));
 }
 vector<Arbol*> ControlParques::listaArbParque(string nbre_parque){
     Parque* parque = buscarParque(nbre_parque);
@@ -253,9 +374,9 @@ vector<Arbol*> ControlParques::listaArbParque(string nbre_parque){
 }
 Arbol* ControlParques::arbolMasAlto(){
     Arbol* arbolMasAlto=nullptr;
-    list<Parque>::iterator it=parks.begin();
+    map<int,Parque>::iterator it=parks.begin();
     while(it!=parks.end()){
-        Arbol* mayorParque=it->arbolMasAlto();
+        Arbol* mayorParque=it->second.arbolMasAlto();
         if(mayorParque != nullptr){
             if(arbolMasAlto==nullptr || mayorParque->get_altura()>arbolMasAlto->get_altura()){
                 arbolMasAlto=mayorParque;
@@ -273,10 +394,10 @@ int ControlParques::contarEspecies(string nbre_parque){
     return 0;
 }
 int ControlParques::contarTipos(){
-    list<Parque>::iterator it=parks.begin();
+    map<int,Parque>::iterator it=parks.begin();
     set<string> tiposUnicos;
     while(it!=parks.end()){
-        const vector<Arbol*> &arboles= it->get_contains();
+        const vector<Arbol*> &arboles= it->second.get_contains();
         for (int i = 0; i < arboles.size(); i++){
             string tipo = arboles[i]->getTipoEspecie();
             if (!tipo.empty()) {
@@ -289,7 +410,7 @@ int ControlParques::contarTipos(){
 }
 
 unsigned int ControlParques::numArboles() const {
-    return trees.size();
+    return trees.numElementos();
 }
 
 vector<Parque*> ControlParques::listarParquesArbol(const string& ncomun){
@@ -327,10 +448,10 @@ vector<Arbol*> ControlParques::buscarArbolNcomunComienzo(const string& ncomun){
 }
 
 int ControlParques::contarArbolesBarrio(int num_barrio){
-    map<string,Arbol>::iterator it=trees.begin();
+    multimap<string,Arbol*>::iterator it=treeName.begin();
     int contador=0;
-    while(it!=trees.end()){
-        if(it->second.get_num_barrio()==num_barrio){
+    while(it!=treeName.end()){
+        if(it->second->get_num_barrio()==num_barrio){
             contador++;
         }
         it++;
@@ -347,4 +468,70 @@ vector<Arbol*> ControlParques::buscarArbolesPorEspecieYDistrito(const string& nb
         pareja.first++;
     }
 return resultados;
+}
+vector<Arbol*> ControlParques::arbolesCajaDistrito(string ndistrito){
+    set<Arbol*> arbolesUnicos;
+    for(int i = 0; i<nests.size(); i++){
+        if(nests[i].estaEnArbol()){
+            Arbol* arbaux = nests[i].getArbol();
+            if(arbaux !=nullptr && arbaux->get_nbre_distrito()==ndistrito){
+                arbolesUnicos.insert(arbaux);
+            }
+        }
+    }
+    return vector<Arbol*>(arbolesUnicos.begin(),arbolesUnicos.end());
+}
+
+unsigned int ControlParques::contarCajasEnArbol(){
+    unsigned int contador = 0;
+    for (int i =0; i<nests.size(); i++){
+        if (nests[i].estaEnArbol()){
+            contador++;
+        }
+    }
+    return contador;
+}
+
+vector<CajaNido*> ControlParques::cajasEnDistrito(string nbre_distrito){
+    vector<CajaNido*> resultados;
+    for(int i=0;i<nests.size();i++){
+        if(nests[i].getDistrito().find(nbre_distrito)!=string::npos){
+            resultados.push_back(&nests[i]);
+        }
+    }
+    return resultados;
+}
+
+unsigned int ControlParques::idCajaNido(const CajaNido* caja) const {
+    if (caja == nullptr) {
+        return 0;
+    }
+    
+    for (unsigned int i = 0; i < nests.size(); ++i) {
+        if (&nests[i] == caja) {
+            return i + 2; 
+        }
+    }
+    
+    return 0;
+}
+
+CajaNido* ControlParques::buscarCajaNido(unsigned int linea) {
+if (linea<2 || (linea-2)>=nests.size()){
+    return nullptr;
+}
+return &nests[linea - 2];
+}
+
+vector<Parque*> ControlParques::parquesConCajaNido() {
+    set<Parque*> parquesUnicos;
+    for(int i = 0; i<nests.size();i++){
+        if(nests[i].estaEnArbol()){
+            Arbol* arbaux = nests[i].getArbol();
+            if(arbaux->getParque()!=nullptr){
+                parquesUnicos.insert(arbaux->getParque());
+            }
+        }
+    }
+    return vector<Parque*>(parquesUnicos.begin(),parquesUnicos.end());
 }

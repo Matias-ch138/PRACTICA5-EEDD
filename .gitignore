@@ -68,4 +68,3 @@ Testing/
 .cache/
 .vscode/
 .build/
-*.txt

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Especie.h"
+#include "UTM.h"
 using namespace std;
 
 class Parque;
@@ -16,8 +17,7 @@ private:
     string nbre_distrito_;
     int num_barrio_;
     string nbre_barrio_;
-    double X_;
-    double Y_;
+    UTM coord_;
     float perimetro_;
     float altura_;
     Especie* especieAsociada_;
@@ -25,8 +25,8 @@ private:
 
 public:
     Arbol(string assetnum, int num_parque, int num_distrito, string nbre_distrito, 
-          int num_barrio, string nbre_barrio, double X, double Y, 
-          float perimetro, float altura);
+        int num_barrio, string nbre_barrio, UTM coord,
+        float perimetro, float altura);
     Arbol();
 
     string get_assetnum() const;
@@ -35,8 +35,7 @@ public:
     string get_nbre_distrito() const;
     int get_num_barrio() const;
     string get_nbre_barrio() const;
-    double get_X() const;
-    double get_Y() const;
+    UTM get_coord() const;
     float get_perimetro() const;
     float get_altura() const;
 
@@ -47,8 +46,7 @@ public:
     void set_nbre_distrito(const string& nbre_distrito);
     void set_num_barrio(int num_barrio);
     void set_nbre_barrio(const string& nbre_barrio);
-    void set_X(double X);
-    void set_Y(double Y);
+    void set_coord(const UTM& coord);
     void set_perimetro(float perimetro);
     void set_altura(float altura);
 

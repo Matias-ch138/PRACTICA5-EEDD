@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Especie.h"
+#include "Arbol.h"
 #include <vector>
 
 // Lee el fichero data/arbolado-especies.csv: valores separados por comas,
@@ -21,6 +22,7 @@ public:
 
     std::size_t numeroEspecies() const;
     std::size_t filasDescartadas() const;
+    bool cargarArboles(vector<Arbol>& arboles, const std::string& rutaFichero);
 
 private:
     std::size_t numeroEspecies_ = 0;

@@ -10,9 +10,9 @@
 #endif
 
 
-#include "header/ControlParques.h"
-#include "header/Arbol.h"
-#include "header/CajaNido.h"
+#include "ControlParques.h"
+#include "Arbol.h"
+#include "CajaNido.h"
 using namespace std;
 
 //Rutas de los archivos
@@ -54,8 +54,8 @@ int main() {
                 continue;
             }
             cout << "\tÁrbol " << assetnum << ": especie " << arbol->getNbreComun()
-                    << " (" << arbol->getNbreCientifico() << "), altura " << arbol->getAltura()
-                    << " m, parque " << arbol->getNumParque() << endl;
+                    << " (" << arbol->getNbreCientifico() << "), altura " << arbol->get_altura()
+                    << " m, parque " << arbol->get_num_parque() << endl;
         }
 
         cout << "\nAPARTADO 2: ÁRBOLES CON CAJA NIDO EN EL DISTRITO CENTRO\n";
@@ -63,8 +63,8 @@ int main() {
         vector<Arbol *> arbolesConCaja = control.arbolesCajaDistrito(DISTRITO);
         cout << "\tÁrboles encontrados: " << arbolesConCaja.size() << endl;
         for (Arbol *arbol: arbolesConCaja) {
-            cout << "\t" << arbol->getAssetnum() << " - " << arbol->getNbreComun()
-                    << " - " << arbol->getnbredistrito() << endl;
+            cout << "\t" << arbol->get_assetnum() << " - " << arbol->getNbreComun()
+                    << " - " << arbol->get_nbre_distrito() << endl;
         }
 
         cout << "\nAPARTADO 3: CAJAS NIDO ASOCIADAS A UN ÁRBOL\n";
@@ -78,7 +78,7 @@ int main() {
         for (CajaNido *caja: cajasDistrito) {
             cout << "\tCaja " << control.idCajaNido(caja) << ": ";
             if (caja->estaEnArbol()) {
-                cout << "asociada al árbol " << caja->getArbol()->getAssetnum() << endl;
+                cout << "asociada al árbol " << caja->getArbol()->get_assetnum() << endl;
             } else {
                 cout << "sin asociar" << endl;
             }
@@ -98,10 +98,10 @@ int main() {
             cout << endl;
             if (caja->estaEnArbol()) {
                 Arbol *arbol = caja->getArbol();
-                double distancia2 = caja->getCoord().distancia2(arbol->getCoord());
-                cout << "\t" << "identificador del árbol: " << arbol->getAssetnum() << endl;
+                double distancia2 = caja->getCoord().distancia2(arbol->get_coord());
+                cout << "\t" << "identificador del árbol: " << arbol->get_assetnum() << endl;
                 cout << "\t" << "coordenadas del árbol: ";
-                mostrarCoordenadas(arbol->getCoord());
+                mostrarCoordenadas(arbol->get_coord());
                 cout << endl;
                 cout << "\t" << "distancia: " << fixed << setprecision(2) << sqrt(distancia2) << " m"
                         << " (al cuadrado " << distancia2 << ")" << defaultfloat << setprecision(6) << endl;
