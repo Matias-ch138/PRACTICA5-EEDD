@@ -1,0 +1,284 @@
+\doxysection{Thash\+Arbol Class Reference}
+\hypertarget{class_thash_arbol}{}\label{class_thash_arbol}\index{ThashArbol@{ThashArbol}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{Thash\+Arbol}} (int max\+Elementos, float lambda=0.\+7f, int tipo\+Hash=1)
+\begin{DoxyCompactList}\small\item\em Constructor de una Tabla Hash de Arboles. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_thash_arbol_ad2dd5990807ef69e78c62ad5f8e1b1ee}{Thash\+Arbol}} (\doxymbox{\hyperlink{class_thash_arbol}{Thash\+Arbol}} \&thash)
+\begin{DoxyCompactList}\small\item\em Constructor copia de una tabla Hash de Arboles. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_thash_arbol}{Thash\+Arbol}} \& \doxymbox{\hyperlink{class_thash_arbol_a2681aab6c693d844d550dc731046ef12}{operator=}} (\doxymbox{\hyperlink{class_thash_arbol}{Thash\+Arbol}} \&thash)
+\begin{DoxyCompactList}\small\item\em operador de asignación \end{DoxyCompactList}\item 
+\Hypertarget{class_thash_arbol_ab6b7f45d106f021e2b1eadf2b6dd1e91}\label{class_thash_arbol_ab6b7f45d106f021e2b1eadf2b6dd1e91} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Thash\+Arbol} ()
+\begin{DoxyCompactList}\small\item\em Destructor de una Tabla Hash de Arboles. \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{class_thash_arbol_acd2ba528da211c186df7719a31b2f9bc}{insertar}} (unsigned long clave, \doxymbox{\hyperlink{class_arbol}{Arbol}} \&tree)
+\begin{DoxyCompactList}\small\item\em Método de insercción de una Tabla Hash de Arboles. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_arbol}{Arbol}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_thash_arbol_a7154c9f1b89757afe4a1b9f59f23ef68}{buscar}} (unsigned long clave)
+\begin{DoxyCompactList}\small\item\em busca un elemento guardado en una Tabla Hash de Arboles \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{class_thash_arbol_ae92a36de837deadc9d10244fb71dca1c}{borrar}} (unsigned long clave)
+\begin{DoxyCompactList}\small\item\em borra un elemento cuya clavve es \end{DoxyCompactList}\item 
+unsigned int \doxymbox{\hyperlink{class_thash_arbol_a4ef0ead7889cba284fe97c903183b355}{num\+Elementos}} () const
+\begin{DoxyCompactList}\small\item\em devuelve el número de elementos que hay en la Tabla Hash de Arboles \end{DoxyCompactList}\item 
+unsigned int \doxymbox{\hyperlink{class_thash_arbol_a5af5c195dc9aeeb4621dcdf3e08ff27b}{max\+Colisiones}} () const
+\begin{DoxyCompactList}\small\item\em devuelve las máx colisiones que se han producido al insertar un elemento \end{DoxyCompactList}\item 
+unsigned int \doxymbox{\hyperlink{class_thash_arbol_ae88968bdc7b1236322d25480afb05e3d}{num\+Max10}} () const
+\begin{DoxyCompactList}\small\item\em devuelve el número de veces que se han insertado elementos con mas de 10 colisiones \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{class_thash_arbol_a1ff6269c0a4af5d3361cb0d6af61ebb9}{promedio\+Colisiones}} () const
+\begin{DoxyCompactList}\small\item\em devuelve el promedio de colisiones al insertar elementos \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{class_thash_arbol_a788979ab505f3be70e5be091854f3829}{factor\+Carga}} () const
+\begin{DoxyCompactList}\small\item\em devuelve el factor de carga de la table \end{DoxyCompactList}\item 
+unsigned int \doxymbox{\hyperlink{class_thash_arbol_a6f316d353b27e38195b2906d616c549c}{tam\+Tabla}} () const
+\begin{DoxyCompactList}\small\item\em devuelve el tamaño de la tabla \end{DoxyCompactList}\item 
+\Hypertarget{class_thash_arbol_a3fc3d14e3f4439569f392db09dff113d}\label{class_thash_arbol_a3fc3d14e3f4439569f392db09dff113d} 
+void {\bfseries mostrar\+Estado\+Tabla} () const
+\begin{DoxyCompactList}\small\item\em muestra el estado de la tabla por pantalla \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_thash_arbol_ac6839afb6b9e658ad7721c9ef8ea32f2}{set\+Tipo\+Hash}} (int tipo)
+\begin{DoxyCompactList}\small\item\em establecer el tipo de función de hash que vamos a utilizar en la tabla \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_thash_arbol_a195a96b1ee09d3d72047485f53ab1764}{redispersar}} (unsigned int tam)
+\begin{DoxyCompactList}\small\item\em se redispersa la tabla hash con un nuevo tamaño \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{class_thash_arbol_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}\index{ThashArbol@{ThashArbol}!ThashArbol@{ThashArbol}}
+\index{ThashArbol@{ThashArbol}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{ThashArbol()}{ThashArbol()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90} 
+Thash\+Arbol::\+\+Thash\+Arbol (\begin{DoxyParamCaption}\item[{int}]{max\+Elementos}{, }\item[{float}]{lambda}{ = {\ttfamily 0.7f}, }\item[{int}]{tipo\+Hash}{ = {\ttfamily 1}}\end{DoxyParamCaption})}
+
+
+
+Constructor de una Tabla Hash de Arboles. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+Elementos} & número de elementos que se van a meter \\
+\hline
+{\em lambda} & factor de carga \\
+\hline
+{\em tipo\+Hash} & tipo de función hash que se va a utilizar \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_thash_arbol_ad2dd5990807ef69e78c62ad5f8e1b1ee}\index{ThashArbol@{ThashArbol}!ThashArbol@{ThashArbol}}
+\index{ThashArbol@{ThashArbol}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{ThashArbol()}{ThashArbol()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_thash_arbol_ad2dd5990807ef69e78c62ad5f8e1b1ee} 
+Thash\+Arbol::\+\+Thash\+Arbol (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_thash_arbol}{Thash\+Arbol}} \&}]{thash}{}\end{DoxyParamCaption})}
+
+
+
+Constructor copia de una tabla Hash de Arboles. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thash} & tabla Hash de Arboles que vamos a copiar \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{class_thash_arbol_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_thash_arbol_ae92a36de837deadc9d10244fb71dca1c}\index{ThashArbol@{ThashArbol}!borrar@{borrar}}
+\index{borrar@{borrar}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{borrar()}{borrar()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_ae92a36de837deadc9d10244fb71dca1c} 
+bool Thash\+Arbol::\+borrar (\begin{DoxyParamCaption}\item[{unsigned long}]{clave}{}\end{DoxyParamCaption})}
+
+
+
+borra un elemento cuya clavve es 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clave} & \\
+\hline
+{\em clave} & clave del elemento que queremos borrar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true si se ha borrado correctamente 
+
+false si no se ha podido borrar 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_a7154c9f1b89757afe4a1b9f59f23ef68}\index{ThashArbol@{ThashArbol}!buscar@{buscar}}
+\index{buscar@{buscar}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{buscar()}{buscar()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a7154c9f1b89757afe4a1b9f59f23ef68} 
+\doxymbox{\hyperlink{class_arbol}{Arbol}} \texorpdfstring{$\ast$}{*} Thash\+Arbol::\+buscar (\begin{DoxyParamCaption}\item[{unsigned long}]{clave}{}\end{DoxyParamCaption})}
+
+
+
+busca un elemento guardado en una Tabla Hash de Arboles 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clave} & clave del elemento \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Arbol\texorpdfstring{$\ast$}{*} arbol cuya clave es
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em clave} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_thash_arbol_a788979ab505f3be70e5be091854f3829}\index{ThashArbol@{ThashArbol}!factorCarga@{factorCarga}}
+\index{factorCarga@{factorCarga}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{factorCarga()}{factorCarga()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a788979ab505f3be70e5be091854f3829} 
+float Thash\+Arbol::\+factor\+Carga (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+devuelve el factor de carga de la table 
+
+\begin{DoxyReturn}{Returns}
+float factor de carga de la tabla 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_acd2ba528da211c186df7719a31b2f9bc}\index{ThashArbol@{ThashArbol}!insertar@{insertar}}
+\index{insertar@{insertar}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{insertar()}{insertar()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_acd2ba528da211c186df7719a31b2f9bc} 
+bool Thash\+Arbol::\+insertar (\begin{DoxyParamCaption}\item[{unsigned long}]{clave}{, }\item[{\doxymbox{\hyperlink{class_arbol}{Arbol}} \&}]{tree}{}\end{DoxyParamCaption})}
+
+
+
+Método de insercción de una Tabla Hash de Arboles. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clave} & clave del elemento que queremos insertar \\
+\hline
+{\em tree} & elemento que queremos insertar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true si se ha insertado 
+
+false no se ha podido insertar 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_a5af5c195dc9aeeb4621dcdf3e08ff27b}\index{ThashArbol@{ThashArbol}!maxColisiones@{maxColisiones}}
+\index{maxColisiones@{maxColisiones}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{maxColisiones()}{maxColisiones()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a5af5c195dc9aeeb4621dcdf3e08ff27b} 
+unsigned int Thash\+Arbol::\+max\+Colisiones (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+devuelve las máx colisiones que se han producido al insertar un elemento 
+
+\begin{DoxyReturn}{Returns}
+unsigned int el número máximo de colisiones que se han producido 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_a4ef0ead7889cba284fe97c903183b355}\index{ThashArbol@{ThashArbol}!numElementos@{numElementos}}
+\index{numElementos@{numElementos}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{numElementos()}{numElementos()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a4ef0ead7889cba284fe97c903183b355} 
+unsigned int Thash\+Arbol::\+num\+Elementos (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+devuelve el número de elementos que hay en la Tabla Hash de Arboles 
+
+\begin{DoxyReturn}{Returns}
+unsigned int número de elementos 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_ae88968bdc7b1236322d25480afb05e3d}\index{ThashArbol@{ThashArbol}!numMax10@{numMax10}}
+\index{numMax10@{numMax10}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{numMax10()}{numMax10()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_ae88968bdc7b1236322d25480afb05e3d} 
+unsigned int Thash\+Arbol::\+num\+Max10 (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+devuelve el número de veces que se han insertado elementos con mas de 10 colisiones 
+
+\begin{DoxyReturn}{Returns}
+unsigned int número de veces que se han insertado elementos con mas de 10 colisiones 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_a2681aab6c693d844d550dc731046ef12}\index{ThashArbol@{ThashArbol}!operator=@{operator=}}
+\index{operator=@{operator=}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a2681aab6c693d844d550dc731046ef12} 
+\doxymbox{\hyperlink{class_thash_arbol}{Thash\+Arbol}} \& Thash\+Arbol::\+operator= (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_thash_arbol}{Thash\+Arbol}} \&}]{thash}{}\end{DoxyParamCaption})}
+
+
+
+operador de asignación 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thash} & tabla Hash de Arboles que se va a asignar a otra. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{class_thash_arbol}{Thash\+Arbol}\& tabla Hash de Arboles que ha sido asignada 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_a1ff6269c0a4af5d3361cb0d6af61ebb9}\index{ThashArbol@{ThashArbol}!promedioColisiones@{promedioColisiones}}
+\index{promedioColisiones@{promedioColisiones}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{promedioColisiones()}{promedioColisiones()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a1ff6269c0a4af5d3361cb0d6af61ebb9} 
+float Thash\+Arbol::\+promedio\+Colisiones (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+devuelve el promedio de colisiones al insertar elementos 
+
+\begin{DoxyReturn}{Returns}
+float promedio de colisiones al insertar elementos 
+\end{DoxyReturn}
+\Hypertarget{class_thash_arbol_a195a96b1ee09d3d72047485f53ab1764}\index{ThashArbol@{ThashArbol}!redispersar@{redispersar}}
+\index{redispersar@{redispersar}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{redispersar()}{redispersar()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a195a96b1ee09d3d72047485f53ab1764} 
+void Thash\+Arbol::\+redispersar (\begin{DoxyParamCaption}\item[{unsigned int}]{tam}{}\end{DoxyParamCaption})}
+
+
+
+se redispersa la tabla hash con un nuevo tamaño 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tam} & \\
+\hline
+{\em tam} & tamaño nuevo con el que se va a redispersar la tabla \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_thash_arbol_ac6839afb6b9e658ad7721c9ef8ea32f2}\index{ThashArbol@{ThashArbol}!setTipoHash@{setTipoHash}}
+\index{setTipoHash@{setTipoHash}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{setTipoHash()}{setTipoHash()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_ac6839afb6b9e658ad7721c9ef8ea32f2} 
+void Thash\+Arbol::\+set\+Tipo\+Hash (\begin{DoxyParamCaption}\item[{int}]{tipo}{}\end{DoxyParamCaption})}
+
+
+
+establecer el tipo de función de hash que vamos a utilizar en la tabla 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tipo} & tipo de función hash \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_thash_arbol_a6f316d353b27e38195b2906d616c549c}\index{ThashArbol@{ThashArbol}!tamTabla@{tamTabla}}
+\index{tamTabla@{tamTabla}!ThashArbol@{ThashArbol}}
+\doxysubsubsection{\texorpdfstring{tamTabla()}{tamTabla()}}
+{\footnotesize\ttfamily \label{class_thash_arbol_a6f316d353b27e38195b2906d616c549c} 
+unsigned int Thash\+Arbol::\+tam\+Tabla (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+devuelve el tamaño de la tabla 
+
+\begin{DoxyReturn}{Returns}
+unsigned int tamaño de la tabla 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+Thash\+Arbol.\+h\item 
+Thash\+Arbol.\+cpp\end{DoxyCompactItemize}

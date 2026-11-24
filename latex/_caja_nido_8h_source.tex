@@ -1,0 +1,41 @@
+\doxysection{Caja\+Nido.\+h}
+\hypertarget{_caja_nido_8h_source}{}\label{_caja_nido_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CAJANIDO\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CAJANIDO\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}UTM.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Arbol.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_caja_nido_a761459c06d76a0fefd38ea6076228474}{CajaNido}}\{}
+\DoxyCodeLine{00011\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{string}\ distrito\_;\ }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{string}\ barrio\_;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{string}\ ubicacion\_;}
+\DoxyCodeLine{00015\ \ \ \ \ \doxymbox{\hyperlink{class_u_t_m}{UTM}}\ coord\_;}
+\DoxyCodeLine{00016\ \ \ \ \ \doxymbox{\hyperlink{class_arbol}{Arbol}}*\ itstree\_;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{class_caja_nido_a761459c06d76a0fefd38ea6076228474}{CajaNido}}(\textcolor{keywordtype}{string}\ distrito,\ \textcolor{keywordtype}{string}\ barrio,\ \textcolor{keywordtype}{string}\ ubicacion,\ \doxymbox{\hyperlink{class_u_t_m}{UTM}}\&\ coord);}
+\DoxyCodeLine{00019\ \ \ \ \ \doxymbox{\hyperlink{class_caja_nido_a761459c06d76a0fefd38ea6076228474}{\string~CajaNido}}()=\textcolor{keywordflow}{default};}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{string}\ \doxymbox{\hyperlink{class_caja_nido_afb31d24750e6dd29b294a8b51b90baff}{getDistrito}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_caja_nido_ac5f80c36b1d16130755b07bb27a5870b}{setDistrito}}(\textcolor{keyword}{const}\ std::string\&\ dist);}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{string}\ \doxymbox{\hyperlink{class_caja_nido_a053e9303379c33244d78dcb1d0f5acaa}{getBarrio}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_caja_nido_af55d71af46d552df0469ead266b285fb}{setBarrio}}(\textcolor{keyword}{const}\ std::string\&\ barr);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{string}\ \doxymbox{\hyperlink{class_caja_nido_a349d430490f3d896cd61172da7ced000}{getUbicacion}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_caja_nido_a40fda5f280de2ab305850b9b3984d6cb}{setUbicacion}}(\textcolor{keyword}{const}\ std::string\&\ ubi);}
+\DoxyCodeLine{00028\ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \doxymbox{\hyperlink{class_u_t_m}{UTM}}\ \doxymbox{\hyperlink{class_caja_nido_a46cc3373b456af4d6d52656325ee505b}{getCoord}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_caja_nido_ad95fa524938a59f41ca806064cf81b8e}{setCoord}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_u_t_m}{UTM}}\&\ c);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_caja_nido_a786b8998dd9cf9f11f6949bb7c3df250}{setArbol}}(\doxymbox{\hyperlink{class_arbol}{Arbol}}*\ a);}
+\DoxyCodeLine{00033\ \ \ \ \ \doxymbox{\hyperlink{class_arbol}{Arbol}}*\ \doxymbox{\hyperlink{class_caja_nido_a6e77ee62cece16d5f156360c204a3b32}{getArbol}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_caja_nido_ab95a25c6201de9eb5a30f30affadbf96}{estaEnArbol}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
