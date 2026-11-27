@@ -6,7 +6,7 @@
  * @param x coordenada x
  * @param y coordenada y
  */
-UTM::UTM(double x, double y): X(x),Y(x){}
+UTM::UTM(double x, double y): X(x),Y(y){}
 /**
  * @brief obtener la cordenada x
  * 
@@ -45,7 +45,7 @@ void UTM::setY(double y){
  * @param otro objeto UTM que se va a comparar
  * @return double distancia entre los dos objetos
  */
-double UTM::distancia2(const UTM &otro){
+double UTM::distancia2(const UTM &otro) const{
     double dx = this->X - otro.X;
     double dy = this->Y - otro.Y;
     return (dx * dx) + (dy * dy);

@@ -106,10 +106,10 @@ static Parque* buscarParquePorCodigo(list<Parque>& parques, int codigo) {
     }
     return nullptr;
 }
-ControlParques::ControlParques() : trees(135000, 0.65f, 3) {
+ControlParques::ControlParques() : trees(135000, 0.65f, 2) {
 }
 ControlParques::ControlParques(const string& rutaEspecies, const string& rutaParques,const string& rutaArboles, const string& rutaCajasNido)
-    : trees(135000, 0.65f, 3) {
+    : trees(135000, 0.65f, 2) {
 
     // 1. Cargar Especies directamente en map<string, Especie>
     vector<Especie> vecEspeciesAux;
@@ -194,17 +194,14 @@ ControlParques::ControlParques(const string& rutaEspecies, const string& rutaPar
 
             assetnumsAux.push_back(arbol.get_assetnum());
 
-            // Recuperar puntero al árbol ya almacenado en la tabla hash
             Arbol* arbolAlmacenado = trees.buscar(claveHash);
             if (arbolAlmacenado != nullptr) {
-                // Enlazar con Parque en map<int, Parque>
                 map<int, Parque>::iterator itParque = parks.find(arbolAlmacenado->get_num_parque());
                 if (itParque != parks.end()) {
                     itParque->second.insertarArbol(arbolAlmacenado);
                     arbolAlmacenado->setParque(&(itParque->second));
                 }
 
-                // Insertar en multimap de nombres comunes
                 if (especieEncontrada != nullptr) {
                     treeName.insert({especieEncontrada->get_nombre_comun(), arbolAlmacenado});
                 }

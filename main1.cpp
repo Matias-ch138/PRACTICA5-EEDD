@@ -4,6 +4,9 @@
 #include <chrono>
 #include <random>
 #include <string>
+
+#include <algorithm>
+#include <set>
 #include "Arbol.h"
 #include "ThashArbol.h"
 #include "LectorCSV.h"
@@ -24,6 +27,7 @@ int main() {
         cout << "Error: No se pudo abrir el archivo arboladoMadrid.csv" << endl;
         return 1;
     }
+    list<Arbol> listaArboles(todosLosArboles.begin(), todosLosArboles.end());
 
     int totalArboles = (int)todosLosArboles.size();
     cout << "Arboles cargados correctamente: " << totalArboles << endl << endl;
@@ -53,6 +57,7 @@ int main() {
                 << " | Max Colisiones: " << tabla.maxColisiones()
                 << " | Promedio: " << tabla.promedioColisiones() 
                 << " | >10 Colisiones: " << tabla.numMax10() << endl;
+            tabla.mostrarEstadoTabla();
         }
     }
     cout << endl;
@@ -62,34 +67,46 @@ int main() {
     // =========================================================================
     cout << "--- FASE 2: TABLA HASH vs STD::LIST ---" << endl;
     
-    // a) Elegir 2000 claves al azar
+    // a) Seleccionar 2000 identificadores distintos
     vector<unsigned long> clavesHashAleatorias;
     vector<string> clavesListaAleatorias;
-    
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(0, totalArboles - 1);
 
-    for (int i = 0; i < 2000; i++) {
-        int indiceAleatorio = dis(gen);
-        string assetNum = todosLosArboles[indiceAleatorio].get_assetnum();
+    set<string> identificadoresUnicos;
+    vector<pair<unsigned long, string>> identificadoresDisponibles;
+    for (size_t i = 0; i < todosLosArboles.size(); ++i) {
+        const string& assetnum = todosLosArboles[i].get_assetnum();
+        size_t caracteresConvertidos = 0;
         try {
-            clavesHashAleatorias.push_back(stoul(assetNum));
-            clavesListaAleatorias.push_back(assetNum);
+            unsigned long clave = stoul(assetnum, &caracteresConvertidos);
+            if (caracteresConvertidos == assetnum.size() &&
+                identificadoresUnicos.insert(assetnum).second) {
+                identificadoresDisponibles.push_back({clave, assetnum});
+            }
         } catch (const exception&) {
-            i--; // Reintentar si algún assetnum no es numérico puro
+            continue;
         }
     }
 
-    // b) Preparar la Tabla Hash (Ajusta 0.68f y 2 según la ganadora de la Fase 1)
-    ThashArbol tablaGanadora(totalArboles, 0.68f, 2);
-    list<Arbol> listaArboles;
+    if (identificadoresDisponibles.size() < 2000) {
+        cerr << "Error: no hay 2000 identificadores numéricos distintos para la prueba." << endl;
+        return 1;
+    }
+
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(identificadoresDisponibles.begin(), identificadoresDisponibles.end(), gen);
+    for (size_t i = 0; i < 2000; ++i) {
+        clavesHashAleatorias.push_back(identificadoresDisponibles[i].first);
+        clavesListaAleatorias.push_back(identificadoresDisponibles[i].second);
+    }
+
+    // b) Preparar la Tabla Hash con la configuración ganadora
+    ThashArbol tablaGanadora(totalArboles, 0.65f, 2);
 
     for (size_t i = 0; i < todosLosArboles.size(); ++i) {
         try {
             unsigned long clave = stoul(todosLosArboles[i].get_assetnum());
             tablaGanadora.insertar(clave, todosLosArboles[i]);
-            listaArboles.push_back(todosLosArboles[i]);
         } catch (const exception&) {
             continue;
         }
@@ -104,7 +121,7 @@ int main() {
         }
     }
     auto finHash = high_resolution_clock::now();
-    auto tiempoHash = duration_cast<microseconds>(finHash - inicioHash).count();
+    auto tiempoHash = duration<double, milli>(finHash - inicioHash).count();
 
     // d) Cronometrar la Lista (Búsqueda secuencial)
     auto inicioLista = high_resolution_clock::now();
@@ -118,12 +135,12 @@ int main() {
         }
     }
     auto finLista = high_resolution_clock::now();
-    auto tiempoLista = duration_cast<microseconds>(finLista - inicioLista).count();
+    auto tiempoLista = duration<double, milli>(finLista - inicioLista).count();
 
     // Mostrar resultados
-    cout << "Buscando 2000 arboles aleatorios..." << endl;
-    cout << "Tiempo Tabla Hash : " << tiempoHash << " microsegundos (Encontrados: " << encontradosHash << ")" << endl;
-    cout << "Tiempo std::list  : " << tiempoLista << " microsegundos (Encontrados: " << encontradosLista << ")" << endl;
+    cout << "Buscando 2000 identificadores distintos aleatorios..." << endl;
+    cout << "Tiempo Tabla Hash : " << tiempoHash << " ms (Encontrados: " << encontradosHash << ")" << endl;
+    cout << "Tiempo std::list  : " << tiempoLista << " ms (Encontrados: " << encontradosLista << ")" << endl;
 
     return 0;
 }

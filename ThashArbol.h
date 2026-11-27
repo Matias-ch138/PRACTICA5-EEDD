@@ -2,6 +2,7 @@
 #define THASHARBOL_H
 
 #include <vector>
+#include <list>
 #include <iostream>
 #include <cmath>
 #include "Arbol.h"
@@ -13,22 +14,26 @@ private:
 
     struct Entrada {
         unsigned long clave;
-        Arbol dato;
+        Arbol* dato;
         Estado estado;
 
-        Entrada() : clave(0), estado(VACIA) {}
+        Entrada() : clave(0), dato(nullptr), estado(VACIA) {}
     };
 
     vector<Entrada> tabla_;
+    list<Arbol> arboles_;
     unsigned int numElementos_;
     unsigned int maxColisiones_;
     unsigned int numMax10_;       
     unsigned long totalColisiones_;
     unsigned int numInserciones_;
     int tipoHash_;                
+    unsigned int numRedispersiones_;
+    float lambda_;
 
     bool esPrimo(unsigned int n) const;
     unsigned int siguientePrimo(unsigned int n) const;
+    bool insertarEnTabla(unsigned long clave, Arbol* tree);
 
     unsigned int hashCuadratica(unsigned long clave, int intento) const;
     unsigned int hashDoble1(unsigned long clave, int intento) const;
@@ -57,6 +62,7 @@ public:
     unsigned int tamTabla() const;
     void mostrarEstadoTabla() const;
     void setTipoHash(int tipo);
+    unsigned int numRedispersiones() const;
 
     void redispersar(unsigned int tam);
 };

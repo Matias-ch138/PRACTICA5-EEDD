@@ -1,4 +1,6 @@
 #include "ThashArbol.h"
+#include <stdexcept>
+#include <utility>
 
 /**
  * @brief saber si un número es primo
@@ -102,7 +104,8 @@ unsigned int ThashArbol::hash(unsigned long clave, int intento) const {
  */
 ThashArbol::ThashArbol(int maxElementos, float lambda, int tipoHash)
     : numElementos_(0), maxColisiones_(0), numMax10_(0),
-    totalColisiones_(0), numInserciones_(0), tipoHash_(tipoHash) {
+    totalColisiones_(0), numInserciones_(0), tipoHash_(tipoHash),
+    numRedispersiones_(0), lambda_(lambda) {
     unsigned int tamBase = (unsigned int)ceil(maxElementos / lambda);
     unsigned int tamPrimo = siguientePrimo(tamBase);
     tabla_.resize(tamPrimo);
@@ -116,7 +119,15 @@ ThashArbol::ThashArbol(ThashArbol& thash)
     : tabla_(thash.tabla_), numElementos_(thash.numElementos_),
     maxColisiones_(thash.maxColisiones_), numMax10_(thash.numMax10_),
     totalColisiones_(thash.totalColisiones_), numInserciones_(thash.numInserciones_),
-    tipoHash_(thash.tipoHash_) {}
+    tipoHash_(thash.tipoHash_), numRedispersiones_(thash.numRedispersiones_),
+    lambda_(thash.lambda_) {
+    for (size_t i = 0; i < thash.tabla_.size(); ++i) {
+        if (thash.tabla_[i].estado == OCUPADA) {
+            arboles_.push_back(*thash.tabla_[i].dato);
+            tabla_[i].dato = &arboles_.back();
+        }
+    }
+}
 /**
  * @brief operador de asignación
  * 
@@ -125,13 +136,17 @@ ThashArbol::ThashArbol(ThashArbol& thash)
  */
 ThashArbol& ThashArbol::operator=(ThashArbol& thash) {
     if (this != &thash) {
-        tabla_ = thash.tabla_;
-        numElementos_ = thash.numElementos_;
-        maxColisiones_ = thash.maxColisiones_;
-        numMax10_ = thash.numMax10_;
-        totalColisiones_ = thash.totalColisiones_;
-        numInserciones_ = thash.numInserciones_;
-        tipoHash_ = thash.tipoHash_;
+        ThashArbol copia(thash);
+        tabla_.swap(copia.tabla_);
+        arboles_.swap(copia.arboles_);
+        std::swap(numElementos_, copia.numElementos_);
+        std::swap(maxColisiones_, copia.maxColisiones_);
+        std::swap(numMax10_, copia.numMax10_);
+        std::swap(totalColisiones_, copia.totalColisiones_);
+        std::swap(numInserciones_, copia.numInserciones_);
+        std::swap(tipoHash_, copia.tipoHash_);
+        std::swap(numRedispersiones_, copia.numRedispersiones_);
+        std::swap(lambda_, copia.lambda_);
     }
     return *this;
 }
@@ -149,6 +164,21 @@ ThashArbol::~ThashArbol() {}
  * @return false no se ha podido insertar
  */
 bool ThashArbol::insertar(unsigned long clave, Arbol& tree) {
+    arboles_.push_back(tree);
+    Arbol* arbolAlmacenado = &arboles_.back();
+
+    if (!insertarEnTabla(clave, arbolAlmacenado)) {
+        arboles_.pop_back();
+        return false;
+    }
+
+    if (factorCarga() > lambda_) {
+        redispersar(static_cast<unsigned int>(ceil(tabla_.size() * 1.3)));
+    }
+    return true;
+}
+
+bool ThashArbol::insertarEnTabla(unsigned long clave, Arbol* tree) {
     int intento = 0;
     int primerBorrado = -1;
     unsigned int M = tabla_.size();
@@ -204,7 +234,7 @@ Arbol* ThashArbol::buscar(unsigned long clave) {
             return nullptr; 
         }
         if (tabla_[pos].estado == OCUPADA && tabla_[pos].clave == clave) {
-            return &(tabla_[pos].dato);
+            return tabla_[pos].dato;
         }
         intento++;
     }
@@ -228,8 +258,19 @@ bool ThashArbol::borrar(unsigned long clave) {
             return false;
         }
         if (tabla_[pos].estado == OCUPADA && tabla_[pos].clave == clave) {
+            Arbol* arbolBorrado = tabla_[pos].dato;
             tabla_[pos].estado = BORRADA;
+            tabla_[pos].dato = nullptr;
             numElementos_--;
+
+            list<Arbol>::iterator it = arboles_.begin();
+            while (it != arboles_.end()) {
+                if (&*it == arbolBorrado) {
+                    arboles_.erase(it);
+                    break;
+                }
+                ++it;
+            }
             return true;
         }
         intento++;
@@ -298,6 +339,7 @@ void ThashArbol::mostrarEstadoTabla() const {
     cout << "Maximo de colisiones: " << maxColisiones() << endl;
     cout << "Inserciones con > 10 colisiones: " << numMax10() << endl;
     cout << "Promedio de colisiones: " << promedioColisiones() << endl;
+    cout << "Redispersiones realizadas: " << numRedispersiones() << endl;
     cout << "=================================" << endl;
 }
 /**
@@ -307,6 +349,9 @@ void ThashArbol::mostrarEstadoTabla() const {
  */
 void ThashArbol::setTipoHash(int tipo) {
     tipoHash_ = tipo;
+}
+unsigned int ThashArbol::numRedispersiones() const {
+    return numRedispersiones_;
 }
 /**
  * @brief se redispersa la tabla hash con un nuevo tamaño @param tam
@@ -327,7 +372,10 @@ void ThashArbol::redispersar(unsigned int tam) {
 
     for (size_t i = 0; i < tablaAntigua.size(); ++i) {
         if (tablaAntigua[i].estado == OCUPADA) {
-            insertar(tablaAntigua[i].clave, tablaAntigua[i].dato);
+            if (!insertarEnTabla(tablaAntigua[i].clave, tablaAntigua[i].dato)) {
+                throw logic_error("No se pudo reinsertar un árbol durante la redispersión.");
+            }
         }
     }
+    ++numRedispersiones_;
 }

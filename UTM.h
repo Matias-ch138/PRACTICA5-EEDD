@@ -15,7 +15,7 @@ public:
     void setX(double x);
     void setY(double y);
 
-    double distancia2(const UTM &otro);
+    double distancia2(const UTM &otro) const;
 };
 
 #endif
