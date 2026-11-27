@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Practica5-EEDD", "index.html", [
+  [ "Práctica 5", "index.html", [
     [ "Análisis de tablas de dispersión", "md_analisis___thash.html", [
       [ "Tamaño de tabla: 206879", "md_analisis___thash.html#autotoc_md1", null ],
       [ "Tamaño de tabla: 197711", "md_analisis___thash.html#autotoc_md2", null ],
@@ -40,7 +40,11 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Functions", "globals_func.html", null ]
+      ] ]
     ] ]
   ] ]
 ];

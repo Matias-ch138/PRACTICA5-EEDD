@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.16.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Practica5-EEDD: Análisis de tablas de dispersión</title>
+<title>Práctica 5: Análisis de tablas de dispersión</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Practica5-EEDD
+   <div id="projectname">Práctica 5
    </div>
   </td>
  </tr>
@@ -107,7 +107,7 @@ Tamaño de tabla: 206879</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Hash 2  </td><td class="markdownTableBodyCenter">254  </td><td class="markdownTableBodyCenter">168  </td><td class="markdownTableBodyCenter">0.65  </td><td class="markdownTableBodyCenter">0.597978  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Hash 3  </td><td class="markdownTableBodyCenter">28  </td><td class="markdownTableBodyCenter">171  </td><td class="markdownTableBodyCenter">0.65  </td><td class="markdownTableBodyCenter">0.642564  </td></tr>
+<td class="markdownTableBodyNone">Hash 3  </td><td class="markdownTableBodyCenter">21  </td><td class="markdownTableBodyCenter">176  </td><td class="markdownTableBodyCenter">0.65  </td><td class="markdownTableBodyCenter">0.636360  </td></tr>
 </table>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
 Tamaño de tabla: 197711</h1>
@@ -119,15 +119,15 @@ Tamaño de tabla: 197711</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Hash 2  </td><td class="markdownTableBodyCenter">40  </td><td class="markdownTableBodyCenter">209  </td><td class="markdownTableBodyCenter">0.68  </td><td class="markdownTableBodyCenter">0.607098  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Hash 3  </td><td class="markdownTableBodyCenter">23  </td><td class="markdownTableBodyCenter">255  </td><td class="markdownTableBodyCenter">0.68  </td><td class="markdownTableBodyCenter">0.706571  </td></tr>
+<td class="markdownTableBodyNone">Hash 3  </td><td class="markdownTableBodyCenter">24  </td><td class="markdownTableBodyCenter">234  </td><td class="markdownTableBodyCenter">0.68  </td><td class="markdownTableBodyCenter">0.698954  </td></tr>
 </table>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 Justificación de la configuración elegida</h1>
 <p>Hemos optado por un **factor de carga $\lambda = 0.65$ (tamaño primo 206.879)** junto con la <b>Dispersión Doble 1 (Hashing de Fibonacci - Hash 2)</b>. Al analizar los datos obtenidos con los 134.438 árboles reales, se observa que la exploración cuadrática sufre un fuerte agrupamiento primario (<em>clustering</em>), disparando el promedio a más de 21 colisiones por inserción y provocando que más de 32.000 elementos superen las 10 colisiones. Por el contrario, las funciones de dispersión doble rompen los patrones secuenciales de los identificadores (<span class="tt">assetnum</span>), reduciendo el promedio por debajo de 1 colisión. Entre ambas, la Dispersión Doble 1 con factor de carga 0.65 ofrece el <b>menor promedio de colisiones global (0.598)</b> y la <b>menor cantidad de inserciones críticas por encima de 10 colisiones (168)</b>, garantizando un acceso prácticamente en tiempo constante $O(1)$.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
 Comparación de tiempos dados en milisegundos</h1>
-<p>Tiempo en realizar las búsquedas en la Tabla Hash: 0.505 ms. <br  />
- Tiempo en realizar las búsquedas en la Lista: 19363.083 ms. </p>
+<p>Tiempo en realizar las búsquedas en la Tabla Hash: 0.0932 ms.</p>
+<p>Tiempo en realizar las búsquedas en la Lista: 3351.28 ms. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

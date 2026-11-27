@@ -5,65 +5,71 @@
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ THASHARBOL\_H}}
 \DoxyCodeLine{00003\ }
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
-\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <cmath>}}
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Arbol.h"{}}}
-\DoxyCodeLine{00008\ \textcolor{keyword}{using\ namespace\ }std;}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\ \{}
-\DoxyCodeLine{00011\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{enum}\ Estado\ \{\ VACIA,\ OCUPADA,\ BORRADA\ \};}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{struct\ }Entrada\ \{}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave;}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{class_arbol}{Arbol}}\ dato;}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ Estado\ estado;}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ Entrada()\ :\ clave(0),\ estado(VACIA)\ \{\}}
-\DoxyCodeLine{00020\ \ \ \ \ \};}
-\DoxyCodeLine{00021\ }
-\DoxyCodeLine{00022\ \ \ \ \ vector<Entrada>\ tabla\_;}
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numElementos\_;}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ maxColisiones\_;}
-\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numMax10\_;\ \ \ \ \ \ \ }
-\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ totalColisiones\_;}
-\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numInserciones\_;}
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ tipoHash\_;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{bool}\ esPrimo(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ siguientePrimo(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hashCuadratica(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hashDoble1(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hashDoble2(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hash(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ Constructores,\ operador\ asignación\ y\ destructor}}
-\DoxyCodeLine{00041\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}(\textcolor{keywordtype}{int}\ maxElementos,\ \textcolor{keywordtype}{float}\ lambda\ =\ 0.7f,\ \textcolor{keywordtype}{int}\ tipoHash\ =\ 1);}
-\DoxyCodeLine{00042\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}(\doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\&\ thash);}
-\DoxyCodeLine{00043\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\&\ \doxymbox{\hyperlink{class_thash_arbol_a2681aab6c693d844d550dc731046ef12}{operator=}}(\doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\&\ thash);}
-\DoxyCodeLine{00044\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_ab6b7f45d106f021e2b1eadf2b6dd1e91}{\string~ThashArbol}}();}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ Operaciones\ principales}}
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_thash_arbol_acd2ba528da211c186df7719a31b2f9bc}{insertar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \doxymbox{\hyperlink{class_arbol}{Arbol}}\&\ tree);}
-\DoxyCodeLine{00048\ \ \ \ \ \doxymbox{\hyperlink{class_arbol}{Arbol}}*\ \doxymbox{\hyperlink{class_thash_arbol_a7154c9f1b89757afe4a1b9f59f23ef68}{buscar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave);}
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_thash_arbol_ae92a36de837deadc9d10244fb71dca1c}{borrar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave);}
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_a4ef0ead7889cba284fe97c903183b355}{numElementos}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ Métricas}}
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_a5af5c195dc9aeeb4621dcdf3e08ff27b}{maxColisiones}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_ae88968bdc7b1236322d25480afb05e3d}{numMax10}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_thash_arbol_a1ff6269c0a4af5d3361cb0d6af61ebb9}{promedioColisiones}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_thash_arbol_a788979ab505f3be70e5be091854f3829}{factorCarga}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_a6f316d353b27e38195b2906d616c549c}{tamTabla}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_thash_arbol_a3fc3d14e3f4439569f392db09dff113d}{mostrarEstadoTabla}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_thash_arbol_ac6839afb6b9e658ad7721c9ef8ea32f2}{setTipoHash}}(\textcolor{keywordtype}{int}\ tipo);}
-\DoxyCodeLine{00060\ }
-\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_thash_arbol_a195a96b1ee09d3d72047485f53ab1764}{redispersar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ tam);}
-\DoxyCodeLine{00062\ \};}
-\DoxyCodeLine{00063\ }
-\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ THASHARBOL\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Arbol.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{enum}\ Estado\ \{\ VACIA,\ OCUPADA,\ BORRADA\ \};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{struct\ }Entrada\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave;}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{class_arbol}{Arbol}}*\ dato;}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ Estado\ estado;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ Entrada()\ :\ clave(0),\ dato(\textcolor{keyword}{nullptr}),\ estado(VACIA)\ \{\}}
+\DoxyCodeLine{00021\ \ \ \ \ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ vector<Entrada>\ tabla\_;}
+\DoxyCodeLine{00024\ \ \ \ \ list<Arbol>\ arboles\_;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numElementos\_;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ maxColisiones\_;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numMax10\_;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ totalColisiones\_;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numInserciones\_;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ tipoHash\_;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numRedispersiones\_;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{float}\ lambda\_;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ esPrimo(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ siguientePrimo(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{bool}\ insertarEnTabla(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \doxymbox{\hyperlink{class_arbol}{Arbol}}*\ tree);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hashCuadratica(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hashDoble1(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hashDoble2(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ hash(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \textcolor{keywordtype}{int}\ intento)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ Constructores,\ operador\ asignación\ y\ destructor}}
+\DoxyCodeLine{00046\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}(\textcolor{keywordtype}{int}\ maxElementos,\ \textcolor{keywordtype}{float}\ lambda\ =\ 0.7f,\ \textcolor{keywordtype}{int}\ tipoHash\ =\ 1);}
+\DoxyCodeLine{00047\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}(\doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\&\ thash);}
+\DoxyCodeLine{00048\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\&\ \doxymbox{\hyperlink{class_thash_arbol_a2681aab6c693d844d550dc731046ef12}{operator=}}(\doxymbox{\hyperlink{class_thash_arbol_a5fb8c78dd68912dfec156b5ab5993a90}{ThashArbol}}\&\ thash);}
+\DoxyCodeLine{00049\ \ \ \ \ \doxymbox{\hyperlink{class_thash_arbol_ab6b7f45d106f021e2b1eadf2b6dd1e91}{\string~ThashArbol}}();}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ Operaciones\ principales}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_thash_arbol_acd2ba528da211c186df7719a31b2f9bc}{insertar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave,\ \doxymbox{\hyperlink{class_arbol}{Arbol}}\&\ tree);}
+\DoxyCodeLine{00053\ \ \ \ \ \doxymbox{\hyperlink{class_arbol}{Arbol}}*\ \doxymbox{\hyperlink{class_thash_arbol_a7154c9f1b89757afe4a1b9f59f23ef68}{buscar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_thash_arbol_ae92a36de837deadc9d10244fb71dca1c}{borrar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ clave);}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_a4ef0ead7889cba284fe97c903183b355}{numElementos}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ Métricas}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_a5af5c195dc9aeeb4621dcdf3e08ff27b}{maxColisiones}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_ae88968bdc7b1236322d25480afb05e3d}{numMax10}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_thash_arbol_a1ff6269c0a4af5d3361cb0d6af61ebb9}{promedioColisiones}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_thash_arbol_a788979ab505f3be70e5be091854f3829}{factorCarga}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_thash_arbol_a6f316d353b27e38195b2906d616c549c}{tamTabla}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_thash_arbol_a3fc3d14e3f4439569f392db09dff113d}{mostrarEstadoTabla}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_thash_arbol_ac6839afb6b9e658ad7721c9ef8ea32f2}{setTipoHash}}(\textcolor{keywordtype}{int}\ tipo);}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numRedispersiones()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_thash_arbol_a195a96b1ee09d3d72047485f53ab1764}{redispersar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ tam);}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ THASHARBOL\_H\ */}\textcolor{preprocessor}{}}
 
 \end{DoxyCode}

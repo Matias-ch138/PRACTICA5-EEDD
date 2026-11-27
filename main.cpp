@@ -1,3 +1,15 @@
+/**
+ * @file main.cpp
+ * @author Matías Camacho Hoyo (mch00039@red.ujaen.es)
+ * @author Jose Rívas Ceacero (jrc00091@red.ujaen.es)
+ * @brief 
+ * @version 0.1
+ * @date 2026-11-27
+ * 
+ * @copyright Copyright (c) 2026
+ * 
+ */
+
 #include <cmath>
 #include <exception>
 #include <iomanip>

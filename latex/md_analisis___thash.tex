@@ -16,7 +16,7 @@
 \SetCell{c,bg=\tableheadbgcolor,font=\bfseries}función  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}máximo de colisiones  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}supera 10 colisiones  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}factor de carga  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}promedio de colisiones  \\
 Hash 1  &\SetCell{c}206  &\SetCell{c}33259  &\SetCell{c}0.\+65  &\SetCell{c}21.\+6131  \\
 Hash 2  &\SetCell{c}254  &\SetCell{c}168  &\SetCell{c}0.\+65  &\SetCell{c}0.\+597978  \\
-Hash 3  &\SetCell{c}28  &\SetCell{c}171  &\SetCell{c}0.\+65  &\SetCell{c}0.\+642564  \\
+Hash 3  &\SetCell{c}21  &\SetCell{c}176  &\SetCell{c}0.\+65  &\SetCell{c}0.\+636360  \\
 \end{DoxyTable}
 \hypertarget{md_analisis___thash_autotoc_md2}{}\doxysection{\texorpdfstring{Tamaño de tabla:\+ 197711}{Tamaño de tabla:\+ 197711}}\label{md_analisis___thash_autotoc_md2}
 
@@ -24,9 +24,10 @@ Hash 3  &\SetCell{c}28  &\SetCell{c}171  &\SetCell{c}0.\+65  &\SetCell{c}0.\+642
 \SetCell{c,bg=\tableheadbgcolor,font=\bfseries}función  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}máximo de colisiones  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}supera 10 colisiones  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}factor de carga  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}promedio de colisiones  \\
 Hash 1  &\SetCell{c}240  &\SetCell{c}32125  &\SetCell{c}0.\+68  &\SetCell{c}21.\+0285  \\
 Hash 2  &\SetCell{c}40  &\SetCell{c}209  &\SetCell{c}0.\+68  &\SetCell{c}0.\+607098  \\
-Hash 3  &\SetCell{c}23  &\SetCell{c}255  &\SetCell{c}0.\+68  &\SetCell{c}0.\+706571  \\
+Hash 3  &\SetCell{c}24  &\SetCell{c}234  &\SetCell{c}0.\+68  &\SetCell{c}0.\+698954  \\
 \end{DoxyTable}
 \hypertarget{md_analisis___thash_autotoc_md3}{}\doxysection{\texorpdfstring{Justificación de la configuración elegida}{Justificación de la configuración elegida}}\label{md_analisis___thash_autotoc_md3}
 Hemos optado por un \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}factor de carga \$\textbackslash{}lambda = 0.\+65\$ (tamaño primo 206.\+879)\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} junto con la {\bfseries{Dispersión Doble 1 (Hashing de Fibonacci -\/ Hash 2)}}. Al analizar los datos obtenidos con los 134.\+438 árboles reales, se observa que la exploración cuadrática sufre un fuerte agrupamiento primario ({\itshape clustering}), disparando el promedio a más de 21 colisiones por inserción y provocando que más de 32.\+000 elementos superen las 10 colisiones. Por el contrario, las funciones de dispersión doble rompen los patrones secuenciales de los identificadores ({\ttfamily assetnum}), reduciendo el promedio por debajo de 1 colisión. Entre ambas, la Dispersión Doble 1 con factor de carga 0.\+65 ofrece el {\bfseries{menor promedio de colisiones global (0.\+598)}} y la {\bfseries{menor cantidad de inserciones críticas por encima de 10 colisiones (168)}}, garantizando un acceso prácticamente en tiempo constante \$\+O(1)\$.\hypertarget{md_analisis___thash_autotoc_md4}{}\doxysection{\texorpdfstring{Comparación de tiempos dados en milisegundos}{Comparación de tiempos dados en milisegundos}}\label{md_analisis___thash_autotoc_md4}
-Tiempo en realizar las búsquedas en la Tabla Hash:\+ 0.\+505 ms. ~\newline
- Tiempo en realizar las búsquedas en la Lista:\+ 19363.\+083 ms. 
+Tiempo en realizar las búsquedas en la Tabla Hash:\+ 0.\+0932 ms.
+
+Tiempo en realizar las búsquedas en la Lista:\+ 3351.\+28 ms. 
